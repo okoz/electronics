@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "env": {
+                "KICAD_SYMBOL_DIR": "${env:ProgramFiles}\\KiCad\\share\\kicad\\library",
+                "KICAD_TEMPLATE_DIR": "${env:ProgramFiles}\\KiCad\\share\\kicad\\template",	
+                "KICAD_USER_TEMPLATE_DIR": "${env:USERPROFILE}\\Documents\\kicad\\template",
+                "KISYS3DMOD": "${env:ProgramFiles}\\KiCad\\share\\kicad\\modules\\packages3d",	
+                "KISYSMOD": "${env:ProgramFiles}\\KiCad\\share\\kicad\\modules"	
+            }
+        }
+    ]
+}
