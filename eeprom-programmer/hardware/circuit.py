@@ -45,6 +45,9 @@ make_electrolytic_capacitor(max232['VS+'], vcc, '1uF')
 
 # RS232 DB9 connector.
 de9[5] += gnd
+de9[2] += max232['T1OUT']
+de9[3] += max232['R1IN']
+de9[1, 4, 6, 7, 8, 9] += NC
 
 # Address shift registers.
 low_byte['QA, QB, QC, QD, QE, QF, QG, QH'] += address_bus[0:7]
@@ -70,8 +73,6 @@ eeprom['CS'] += gnd
 eeprom['~OE'] += eeprom_output_enable
 eeprom['~WE'] += eeprom_write_enable
 
-
-    
 @subcircuit
 def reset_circuit(reset, vcc, gnd):
     # TODO okoz: Double check the capacitor and resistor footprints. Maybe we can
