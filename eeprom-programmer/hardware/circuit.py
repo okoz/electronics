@@ -17,10 +17,10 @@ de9 = Part("Connector", "DB9_Female", footprint='Connector_Dsub:DSUB-9_Female_Ho
 max232 = Part("Interface_UART", "MAX232", footprint='Package_DIP:DIP-16_W7.62mm')
 eeprom = Part("Memory_EEPROM", "28C256", footprint='Socket:DIP_Socket-28_W11.9_W12.7_W15.24_W17.78_W18.5_3M_228-1277-00-0602J')
 
-# Dummy DIP to lay out a 40 pin ZIF socket.
-# TODO okoz: This footprint doesn't exist.
-dummydip_16 = Part("Connector_Generic", "Conn_02x06_Counter_Clockwise", footprint='Package_DIP:DIP-12_W15.24mm')
-dummydip_16[:] += gnd
+# Some headers to pad the 28-pin ZIF socket to accept a 40 pin one.
+dummy_headers = 2 * Part("Connector_Generic", "Conn_01x06", TEMPLATE, footprint='Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical')
+for headers in dummy_headers:
+    headers[:] += NC
 
 microcontroller = Part("MCU_Microchip_ATtiny", "ATtiny2313-20PU", footprint='Package_DIP:DIP-20_W7.62mm')
 high_byte, low_byte = 2 * Part("74xx", "74HC595", TEMPLATE, footprint='Package_DIP:DIP-16_W7.62mm')
