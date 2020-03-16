@@ -13,6 +13,9 @@ eeprom_output_enable = Net('~EEPROM_OE')
 address_bus = Bus('ADDRESS_BUS', 15)
 data_bus = Bus('DATA_BUS', 8)
 
+isp_connector = Part("Connector_Generic", "Conn_02x03_Odd_Even", footprint='Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical')
+
+power_connector = Part("Connector_Generic", "Conn_01x03", footprint='Connector_BarrelJack:BarrelJack_CUI_PJ-102AH_Horizontal')
 de9 = Part("Connector", "DB9_Female", footprint='Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm')
 max232 = Part("Interface_UART", "MAX232", footprint='Package_DIP:DIP-16_W7.62mm')
 eeprom = Part("Memory_EEPROM", "28C256", footprint='Socket:DIP_Socket-28_W11.9_W12.7_W15.24_W17.78_W18.5_3M_228-1277-00-0602J')
@@ -24,6 +27,9 @@ for headers in dummy_headers:
 
 microcontroller = Part("MCU_Microchip_ATtiny", "ATtiny2313-20PU", footprint='Package_DIP:DIP-20_W7.62mm')
 high_byte, low_byte = 2 * Part("74xx", "74HC595", TEMPLATE, footprint='Package_DIP:DIP-16_W7.62mm')
+
+power_connector[1] += vcc
+power_connector[2, 3] += gnd
 
 @subcircuit
 def make_electrolytic_capacitor(positive, negative, value):
@@ -95,6 +101,17 @@ microcontroller['PB7, PB6, PB5, PB4, PB3, PB2, PB1, PB0'] += data_bus[7:0]
 microcontroller['PD4'] += eeprom_output_enable
 microcontroller['PD5'] += eeprom_write_enable
 microcontroller['PA0, PA1'] += NC
+
+# ISP connector.
+# 1 MISO,  2 +VCC
+# 3 SCK,   4 MOSI
+# 5 RESET, 6 GND
+microcontroller['PB6'] += isp_connector[1]
+microcontroller['VCC'] += isp_connector[2]
+microcontroller['PB7'] += isp_connector[3]
+microcontroller['PB5'] += isp_connector[4]
+microcontroller['~RESET'] += isp_connector[5]
+microcontroller['GND'] += isp_connector[6]
 
 generate_netlist(file_='eeprom_programmer.net')
 
