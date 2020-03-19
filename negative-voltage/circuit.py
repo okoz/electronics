@@ -35,6 +35,14 @@ timer = Part('Timer', 'LM555', footprint='Package_DIP:DIP-8_W7.62mm_Socket_LongP
 input = Part('Connector', 'Screw_Terminal_01x02', footprint='TerminalBlock:TerminalBlock_bornier-2_P5.08mm')
 output = Part('Connector', 'Screw_Terminal_01x02', footprint='TerminalBlock:TerminalBlock_bornier-2_P5.08mm')
 
+@subcircuit
+def charge_pump(pwm, gnd, output):
+    electrolytic_capacitor1[2] += pwm
+    electrolytic_capacitor1[1] += diode1['A'], diode2['K']
+    diode1['K'] += gnd
+    diode2['A'] += electrolytic_capacitor2[1], output
+    electrolytic_capacitor2[2] += gnd
+
 input[:] += vcc, gnd
 timer['VCC, R'] += vcc
 timer['GND'] += gnd
@@ -45,13 +53,8 @@ capacitor1[2] += gnd
 timer['VCC'] += resistor1[1]
 timer['DIS'] += resistor1[2], resistor2[1]
 timer['THR'] += resistor2[2]
-timer['Q'] +=  electrolytic_capacitor1[2]
-electrolytic_capacitor1[1] += diode1['A'], diode2['K']
-diode1['K'] += gnd
-diode2['A'] += electrolytic_capacitor2[1], output[1]
-electrolytic_capacitor2[2] += gnd
+charge_pump(timer['Q'], gnd, output[1])
 output[2] += gnd
-
 
 def generate():
     from pathlib import Path
