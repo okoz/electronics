@@ -43,17 +43,24 @@ def charge_pump(pwm, gnd, output):
     diode2['A'] += electrolytic_capacitor2[1], output
     electrolytic_capacitor2[2] += gnd
 
+@subcircuit
+def pwm_generator(vcc, gnd, output):
+    timer['VCC, R'] += vcc
+    timer['GND'] += gnd
+    timer['TR, THR'] += capacitor2[1]
+    capacitor2[2] += gnd
+    timer['CV'] += capacitor1[1]
+    capacitor1[2] += gnd
+    timer['VCC'] += resistor1[1]
+    timer['DIS'] += resistor1[2], resistor2[1]
+    timer['THR'] += resistor2[2]
+    output += timer['Q']
+
+pwm_signal = Net('PWM_SIGNAL')
+
 input[:] += vcc, gnd
-timer['VCC, R'] += vcc
-timer['GND'] += gnd
-timer['TR, THR'] += capacitor2[1]
-capacitor2[2] += gnd
-timer['CV'] += capacitor1[1]
-capacitor1[2] += gnd
-timer['VCC'] += resistor1[1]
-timer['DIS'] += resistor1[2], resistor2[1]
-timer['THR'] += resistor2[2]
-charge_pump(timer['Q'], gnd, output[1])
+pwm_generator(vcc, gnd, pwm_signal)
+charge_pump(pwm_signal, gnd, output[1])
 output[2] += gnd
 
 def generate():
