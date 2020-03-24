@@ -5,6 +5,10 @@ an MMU but it does control what devices are mapped to what memory address. It
 decides whether the EEPROM, RAM, VIA, or ACIA are enabled based on the state of
 the most significant address bits.
 
+This project has been built on Windows with OCaml 4.02.3. That may sound pretty
+out of date.  And it is but I couldn't get opam to resolve dependencies with newer
+versions (I didn't try very hard).
+
 There is a "reference" implementation in the [verilog](verilog) subdirectory.
 
 File               | Description
