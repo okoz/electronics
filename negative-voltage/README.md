@@ -5,4 +5,4 @@ KiCad for board layout.
 
 Front                 | PCB                 | Back
 :--------------------:|:-------------------:|:--------------------:
-![](images/front.jpg) | ![](images/pcb.png) | ![](images/rear.jpg)
+![](images/front.jpg) | ![](images/pcb.png) | ![](images/back.jpg)
