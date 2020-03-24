@@ -1,25 +1,25 @@
 `timescale 1ns / 1ns
 
 ////////////////////////////////////////////////////////////////////////////////
-// Company: 
+// Company:
 // Engineer:
 //
 // Create Date:   16:44:20 03/22/2020
 // Design Name:   main
-// Module Name:   C:/Users/olegk/Documents/Projects/FPGA/CPLD_MMU/test_main.v
-// Project Name:  CPLD_MMU
-// Target Device:  
-// Tool versions:  
-// Description: 
+// Module Name:   test_main.v
+// Project Name:  hardcaml-mmu
+// Target Device:
+// Tool versions:
+// Description:
 //
 // Verilog Test Fixture created by ISE for module: main
 //
 // Dependencies:
-// 
+//
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//
 ////////////////////////////////////////////////////////////////////////////////
 
 module test_main;
