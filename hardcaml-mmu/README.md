@@ -1,0 +1,18 @@
+# Testing HardCaml with an MMU
+
+This is a simple "MMU" for a 65C02 microcomputer. I'm not sure if this is really
+an MMU but it does control what devices are mapped to what memory address. It
+decides whether the EEPROM, RAM, VIA, or ACIA are enabled based on the state of
+the most significant address bits.
+
+There is a "reference" implementation in [verilog](verilog).
+
+File               | Description
+-------------------|---------------------------------------------------
+`reference_mmu.v` | Reference implementation of the MMU.
+`main.v`           | Toplevel board intended to be used with `main.ucf`
+`hardcaml_mmu.v`  | The HardCaml implementation from running `mmu.exe`
+
+Both of the modules generate the following results under test. It's probably
+correct since only one of the output signals is low at any given time.
+![](images/test-results.png)
