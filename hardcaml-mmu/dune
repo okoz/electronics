@@ -1,0 +1,3 @@
+(executable
+ (name mmu)
+ (libraries core_kernel hardcaml))
