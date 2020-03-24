@@ -8,5 +8,5 @@ KiCad. Behold the red solder mask!
 
 Front                     | PCB                 | Back
 :------------------------:|:-------------------:|:------------------------:
-![](images/front-wip.jpg) | ![](images/pcb.png) | ![](images/rear-wip.jpg)
+![](images/front-wip.jpg) | ![](images/pcb.png) | ![](images/back-wip.jpg)
 
