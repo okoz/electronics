@@ -5,13 +5,13 @@ an MMU but it does control what devices are mapped to what memory address. It
 decides whether the EEPROM, RAM, VIA, or ACIA are enabled based on the state of
 the most significant address bits.
 
-There is a "reference" implementation in [verilog](verilog).
+There is a "reference" implementation in the [verilog](verilog) subdirectory.
 
 File               | Description
 -------------------|---------------------------------------------------
-`reference_mmu.v` | Reference implementation of the MMU.
-`main.v`           | Toplevel board intended to be used with `main.ucf`
-`hardcaml_mmu.v`  | The HardCaml implementation from running `mmu.exe`
+[`reference_mmu.v`](verilog/reference_mmu.v) | Reference implementation of the MMU.
+[`main.v`](verilog/main.v)                    | Toplevel board intended to be used with [`main.ucf`](verilog/main.ucf)
+[`hardcaml_mmu.v`](verilog/hardcaml_mmu.v)   | The HardCaml implementation from running `mmu.exe`
 
 Both of the modules generate the following results under test. It's probably
 correct since only one of the output signals is low at any given time.
