@@ -7,6 +7,6 @@ Here are some photos half way through assembly along with a screenshot from
 KiCad. Behold the red solder mask!
 
 Front                     | PCB                 | Back
---------------------------|---------------------|--------------------------
+:------------------------:|:-------------------:|:------------------------:
 ![](images/front-wip.jpg) | ![](images/pcb.png) | ![](images/rear-wip.jpg)
 
