@@ -1,4 +1,4 @@
-# Random Electronics Things
+# Random Electronic Things
 
 Things in this repo:
 
