@@ -2,7 +2,7 @@
 
 module toplevel(
                 input        reset_n,
-                input        clock, // Assum 1MHz.
+                input        clock, // Assume 1MHz.
                 inout [15:0] address,
                 inout        ram_we_n,
                 output       ram_cs_n,
