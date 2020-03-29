@@ -12,9 +12,9 @@ module mmu_test;
 
 	 // Instantiate the Unit Under Test (UUT)
 	 mmu uut (
-		        .address(address), 
-		        .ram_cs_n(ram_cs_n), 
-		        .via_ce_n(via_ce_n), 
+		        .address(address),
+		        .ram_cs_n(ram_cs_n),
+		        .via_ce_n(via_ce_n),
 		        .acia_ce_n(acia_ce_n)
 	          );
 

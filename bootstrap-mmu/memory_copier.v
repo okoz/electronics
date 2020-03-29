@@ -21,16 +21,16 @@ module memory_copier(
      DONE = 4;
 
    reg [2:0]                       state;
-   reg [EEPROM_ADDRESS_BUS_WIDTH:0] current_address;
-   reg                              ram_we_n_state;
- 
+   reg [(EEPROM_ADDRESS_BUS_WIDTH-1):0] current_address;
+   reg                                  ram_we_n_state;
+
    assign address[15:0] = {{(16-EEPROM_ADDRESS_BUS_WIDTH){1'b1}}, current_address};
    assign ram_we_n = ram_we_n_state;
    assign ram_cs_n = 0;
    assign eeprom_oe_n = 0;
    assign eeprom_cs_n = 0;
    assign done = state == DONE;
-   
+
    always @ (posedge clock) begin
       if (reset_n == 0) begin
          state <= SETTLE_ADDRESS_AND_DATA;
