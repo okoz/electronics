@@ -41,7 +41,7 @@ module memory_copier_test;
    end
 
    always begin
-      #500 clock = ~clock;
+      #5 clock = ~clock;
    end
 
    initial #100000 $finish;
