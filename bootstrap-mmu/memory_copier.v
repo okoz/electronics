@@ -31,7 +31,7 @@ module memory_copier(
    assign eeprom_cs_n = 0;
    assign done = state == DONE;
 
-   always @ (posedge clock) begin
+   always @ (posedge clock or negedge reset_n) begin
       if (reset_n == 0) begin
          state <= SETTLE_ADDRESS_AND_DATA;
          // Set the most significant bits to high because we want to copy the

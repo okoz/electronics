@@ -35,17 +35,15 @@ module memory_copier_test;
 
 		  // Wait 100 ns for global reset to finish
 		  #100;
+
+		  // Add stimulus here
+      reset_n = 1;
    end
 
    always begin
-      #10 clock = ~clock;
+      #500 clock = ~clock;
    end
 
-   initial begin
-		  // Add stimulus here
-      reset_n = 1;
-	 end
-
-   initial #10000 $finish;
+   initial #100000 $finish;
 endmodule
 
