@@ -18,14 +18,14 @@ module mmu_test;
 		        .acia_ce_n(acia_ce_n)
 	          );
 
-	 initial begin
-		  // Initialize Inputs
-		  address = 0;
+   initial begin
+      // Initialize Inputs
+      address = 0;
 
-		  // Wait 100 ns for global reset to finish
-		  #100;
+      // Wait 100 ns for global reset to finish
+      #100;
 
-		  // Add stimulus here
+      // Add stimulus here
       address = 3'b000;
       #1;
       address = 3'b001;
