@@ -21,4 +21,12 @@ Once the transfer is complete it sets the `done` signal to high.
 ![](images/memory_copier.png)
 
 ## MMU
+
+The MMU looks at the highest three bits of the address which gives it a
+granularity of 8KB. This can be easily reconfigured by looking at more address
+bits.
+
+Here RAM is mapped everywhere except for 8KB starting at 0x8000 and another 8KB
+at 0xA000.
+
 ![](images/mmu.png)
