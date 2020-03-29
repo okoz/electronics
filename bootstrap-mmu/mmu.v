@@ -7,7 +7,7 @@ module mmu(
            output      acia_ce_n
            );
 
-   assign via_ce_n = ~(address[2] & ~address[1]);
-   assign acia_ce_n = ~(address[2] & address[1] & ~address[0]);
-   assign ram_cs_n = via_ce_n & acia_ce_n;
+   assign via_ce_n = ~(address[2] & ~address[1] & ~address[0]);
+   assign acia_ce_n = ~(address[2] & ~address[1] & address[0]);
+   assign ram_cs_n = ~via_ce_n | ~acia_ce_n;
 endmodule
