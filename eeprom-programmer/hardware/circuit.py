@@ -14,46 +14,34 @@ address_bus = Bus('ADDRESS_BUS', 15)
 data_bus = Bus('DATA_BUS', 8)
 
 isp_connector = Part("Connector_Generic", "Conn_02x03_Odd_Even", footprint='Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical')
-
-power_connector = Part("Connector_Generic", "Conn_01x03", footprint='Connector_BarrelJack:BarrelJack_CUI_PJ-102AH_Horizontal')
-de9 = Part("Connector", "DB9_Female", footprint='Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm')
-max232 = Part("Interface_UART", "MAX232", footprint='Package_DIP:DIP-16_W7.62mm')
+power_connector = Part('Connector', 'Screw_Terminal_01x02', footprint='TerminalBlock:TerminalBlock_bornier-2_P5.08mm')
 eeprom = Part("Memory_EEPROM", "28C256", footprint='Socket:DIP_Socket-28_W11.9_W12.7_W15.24_W17.78_W18.5_3M_228-1277-00-0602J')
 
-# Some headers to pad the 28-pin ZIF socket to accept a 40 pin one.
-dummy_headers = 2 * Part("Connector_Generic", "Conn_01x06", TEMPLATE, footprint='Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical')
-for headers in dummy_headers:
-    headers[:] += NC
-
-microcontroller = Part("MCU_Microchip_ATtiny", "ATtiny2313-20PU", footprint='Package_DIP:DIP-20_W7.62mm')
-high_byte, low_byte = 2 * Part("74xx", "74HC595", TEMPLATE, footprint='Package_DIP:DIP-16_W7.62mm')
+microcontroller = Part("MCU_Microchip_ATtiny", "ATtiny2313-20PU", footprint='Package_DIP:DIP-20_W7.62mm_Socket_LongPads')
+high_byte, low_byte = 2 * Part("74xx", "74HC595", TEMPLATE, footprint='Package_DIP:DIP-16_W7.62mm_Socket_LongPads')
 
 power_connector[1] += vcc
-power_connector[2, 3] += gnd
+power_connector[2] += gnd
 
 @subcircuit
-def make_electrolytic_capacitor(positive, negative, value):
-    # TODO okoz: The footprint here is probably wrong.
-    capacitor = Part("Device", "CP1", footprint='Capacitor_THT:CP_Radial_D5.0mm_P2.50mm', value=value)
-    capacitor[1] += positive
-    capacitor[2] += negative
+def make_communications_interface(vcc, gnd, rx, tx):
+    '''Communications interface through external max232 adapter.
+    Pinout:
+    1 - GND
+    2 - RTS
+    3 - RX
+    4 - CTS
+    5 - TX
+    6 - VCC'''
+    interface = Part("Connector_Generic", "Conn_01x06", footprint='Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical')
+    interface[1] += gnd
+    interface[2] += NC
+    interface[3] += rx
+    interface[4] += NC
+    interface[5] += tx
+    interface[6] += vcc
 
-# RS232 voltage level shifter.
-max232['VCC, GND'] += vcc, gnd
-max232['T1IN'] += microcontroller['PD1']
-max232['R1OUT'] += microcontroller['PD0']
-max232['T2IN, T2OUT, R2IN, R2OUT'] += NC
-
-make_electrolytic_capacitor(max232['C1+'], max232['C1-'], '1uF')
-make_electrolytic_capacitor(max232['C2+'], max232['C2-'], '1uF')
-make_electrolytic_capacitor(gnd, max232['VS-'], '1uF')
-make_electrolytic_capacitor(max232['VS+'], vcc, '1uF')
-
-# RS232 DB9 connector.
-de9[5] += gnd
-de9[2] += max232['T1OUT']
-de9[3] += max232['R1IN']
-de9[1, 4, 6, 7, 8, 9] += NC
+make_communications_interface(vcc, gnd, microcontroller['PD0'], microcontroller['PD1'])
 
 # Address shift registers.
 low_byte['QA, QB, QC, QD, QE, QF, QG, QH'] += address_bus[0:7]
@@ -83,8 +71,8 @@ eeprom['~WE'] += eeprom_write_enable
 def reset_circuit(reset, vcc, gnd):
     # TODO okoz: Double check the capacitor and resistor footprints. Maybe we can
     # disable the reset pin to gain an I/O.
-    pullup = Part("Device", "R", footprint='Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal')
-    capacitor = Part("Device", "C", footprint='Capacitor_THT:C_Disc_D4.3mm_W1.9mm_P5.00mm')
+    pullup = Part("Device", "R", value='10k', footprint='Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal')
+    capacitor = Part("Device", "C", value='10u', footprint='Capacitor_THT:C_Disc_D4.3mm_W1.9mm_P5.00mm')
     diode = Part("Diode", "1N4004", footprint='Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal')
 
     vcc += pullup[1], diode['K']
@@ -97,7 +85,7 @@ reset_circuit(microcontroller['~RESET'], vcc, gnd)
 microcontroller['PD2'] += microcontroller_address_output
 microcontroller['PD3'] += address_shift_register_clock
 microcontroller['PD6'] += address_register_clock
-microcontroller['PB7, PB6, PB5, PB4, PB3, PB2, PB1, PB0'] += data_bus[7:0]
+microcontroller['PB7, PB6, PB5, PB4, PB3, PB2, PB1, PB0'] += data_bus[0:7]
 microcontroller['PD4'] += eeprom_output_enable
 microcontroller['PD5'] += eeprom_write_enable
 microcontroller['PA0, PA1'] += NC
