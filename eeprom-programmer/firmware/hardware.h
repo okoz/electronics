@@ -5,7 +5,6 @@
  *  Author: olegk
  */ 
 
-
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 

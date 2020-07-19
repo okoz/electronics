@@ -1,5 +1,5 @@
 /*
- * EEPROMProgrammer.c
+ * main.c
  *
  * Created: 2/5/2020 12:23:16 AM
  * Author : olegk
@@ -9,7 +9,15 @@
 #include "serial.h"
 #include "hardware.h"
 
+static void print_address_and_value( unsigned short address )
+{
+	unsigned short data = hardware_read_byte( address );
 
+	serial_hex_word( address );
+	serial_message( ": " );
+	serial_hex_byte( data );
+	serial_line_break();
+}
 
 int main(void)
 {
@@ -30,35 +38,20 @@ int main(void)
 			case 'n':
 			{
 				address++;
-				serial_hex_byte( address >> 8 );
-				serial_hex_byte( address & 0xFF );
-				serial_message( ": " );
-				data = hardware_read_byte( address );
-				serial_hex_byte( data );
-				serial_line_break();
+				print_address_and_value( address );
 			}
 			break;
 			
 			case 'p':
 			{
 				address--;
-				serial_hex_byte( address >> 8 );
-				serial_hex_byte( address & 0xFF );
-				serial_message( ": " );
-				data = hardware_read_byte( address );
-				serial_hex_byte( data );
-				serial_line_break();
+				print_address_and_value( address );
 			}
 			break;
 			
 			case 'd':
 			{
-				serial_hex_byte( address >> 8 );
-				serial_hex_byte( address & 0xFF );
-				serial_message( ": " );
-				data = hardware_read_byte( address );
-				serial_hex_byte( data );
-				serial_line_break();
+				print_address_and_value( address );
 			}
 			break;
 			
@@ -97,9 +90,30 @@ int main(void)
 			}
 			break;
 			
-			case 'r':
+			case 'c':
 			{
 				hardware_write_byte( address, 0xFF );
+			}
+			break;
+			
+			case 'w':
+			{
+				unsigned char high_byte = serial_receive();
+				unsigned char low_byte = serial_receive();
+				unsigned short address = ( ( unsigned short )high_byte ) << 8 | low_byte;
+				unsigned char byte = serial_receive();
+				hardware_write_byte( address, byte );
+				serial_send( 'z' );	
+			}
+			break;
+			
+			case 'r':
+			{
+				unsigned char high_byte = serial_receive();
+				unsigned char low_byte = serial_receive();
+				unsigned short address = ( ( unsigned short )high_byte ) << 8 | low_byte;
+				unsigned char byte = hardware_read_byte( address );
+				serial_send( byte );
 			}
 			break;
 		}
