@@ -27,61 +27,45 @@ static unsigned char read_from_data_bus()
 #define ADDRESS_SHIFT_REGISTER_CLOCK ( 1 << PD3 )
 #define ADDRESS_OUTPUT_BIT ( 1 << PD2 )
 
-static volatile unsigned char control_register;
+#define CONTROL_REGISTER PORTD
 
 void hardware_init()
 {
-	control_register = EEPROM_WRITE_ENABLE | EEPROM_OUTPUT_ENABLE;
-	
 	DDRD = 0xFF;
-	PORTD = control_register;
+	CONTROL_REGISTER = EEPROM_WRITE_ENABLE | EEPROM_OUTPUT_ENABLE;
 }
 
 static void set_bus_options( int output_enable, int write_enable )
 {
 	if ( output_enable )
-	control_register &= ~EEPROM_OUTPUT_ENABLE;
+		CONTROL_REGISTER &= ~EEPROM_OUTPUT_ENABLE;
 	else
-	control_register |= EEPROM_OUTPUT_ENABLE;
+		CONTROL_REGISTER |= EEPROM_OUTPUT_ENABLE;
 	
 	if ( write_enable )
-	control_register &= ~EEPROM_WRITE_ENABLE;
+		CONTROL_REGISTER &= ~EEPROM_WRITE_ENABLE;
 	else
-	control_register |= EEPROM_WRITE_ENABLE;
-	
-	PORTD = control_register;
+		CONTROL_REGISTER |= EEPROM_WRITE_ENABLE;
 }
 
 static void tick_shift_register_clock()
 {
-	control_register |= ADDRESS_SHIFT_REGISTER_CLOCK;
-	PORTD = control_register;
-	
-	control_register &= ~ADDRESS_SHIFT_REGISTER_CLOCK;
-	PORTD = control_register;
+	CONTROL_REGISTER |= ADDRESS_SHIFT_REGISTER_CLOCK;
+	CONTROL_REGISTER &= ~ADDRESS_SHIFT_REGISTER_CLOCK;
 }
 
 static void tick_register_clock()
 {
-	control_register |= ADDRESS_REGISTER_CLOCK;
-	PORTD = control_register;
-	
-	control_register &= ~ADDRESS_REGISTER_CLOCK;
-	PORTD = control_register;
+	CONTROL_REGISTER |= ADDRESS_REGISTER_CLOCK;
+	CONTROL_REGISTER &= ~ADDRESS_REGISTER_CLOCK;
 }
 
 static void set_output_bit( unsigned char bit )
 {
 	if ( bit )
-	{
-		control_register |= ADDRESS_OUTPUT_BIT;
-		PORTD = control_register;
-	}
+		CONTROL_REGISTER |= ADDRESS_OUTPUT_BIT;
 	else
-	{
-		control_register &= ~ADDRESS_OUTPUT_BIT;
-		PORTD = control_register;
-	}
+		CONTROL_REGISTER &= ~ADDRESS_OUTPUT_BIT;
 }
 
 static void set_address( unsigned short address )

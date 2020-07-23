@@ -20,7 +20,7 @@ static void print_address_and_value( unsigned short address )
 }
 
 int main(void)
-{
+{	
 	hardware_init();
 	serial_init();
 	
@@ -100,10 +100,15 @@ int main(void)
 			{
 				unsigned char high_byte = serial_receive();
 				unsigned char low_byte = serial_receive();
-				unsigned short address = ( ( unsigned short )high_byte ) << 8 | low_byte;
 				unsigned char byte = serial_receive();
+				unsigned short address = ( ( unsigned short )high_byte ) << 8 | low_byte;
 				hardware_write_byte( address, byte );
-				serial_send( 'z' );	
+				serial_message( "writing " );
+				serial_hex_byte( byte );
+				serial_message ( " to " );
+				serial_hex_word( address );
+				serial_line_break();
+				//serial_send( 'z' );
 			}
 			break;
 			
