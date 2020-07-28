@@ -103,12 +103,7 @@ int main(void)
 				unsigned char byte = serial_receive();
 				unsigned short address = ( ( unsigned short )high_byte ) << 8 | low_byte;
 				hardware_write_byte( address, byte );
-				serial_message( "writing " );
-				serial_hex_byte( byte );
-				serial_message ( " to " );
-				serial_hex_word( address );
-				serial_line_break();
-				//serial_send( 'z' );
+				serial_send( 'z' );
 			}
 			break;
 			

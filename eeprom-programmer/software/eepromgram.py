@@ -32,7 +32,7 @@ def write(args):
             address_bytes = address.to_bytes(2, byteorder='big')
             serial_port.write(b'w')
             serial_port.write(address_bytes)
-            serial_port.write(content[address])
+            serial_port.write(content[address].to_bytes(1, byteorder='big'))
             response = serial_port.read(1)
             if response != b'z':
                 raise RuntimeError("Didn't get write acknowledgement for address {0}".format(address))
